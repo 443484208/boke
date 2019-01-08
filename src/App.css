@@ -136,3 +136,6 @@ a {
 			li{
 				list-style: none;
 			}
+			textarea{
+				resize:none!important; ;
+			}

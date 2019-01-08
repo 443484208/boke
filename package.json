@@ -2,6 +2,7 @@
   "name": "my-react",
   "version": "0.1.0",
   "private": true,
+   "homepage":" ./",
   "dependencies": {
     "element-react": "^1.4.26",
     "element-theme-default": "^1.4.13",

@@ -93,7 +93,7 @@ class App extends Component {
 			return;
 		} else {
 			//			
-			ajax.postJson('http://134.175.9.97:3000/addUser', logindata).then(data => {
+			ajax.postJson('http://localhost:3000/addUser', logindata).then(data => {
 				if(data.code == '200') {
 					Message({
 						message: '注册成功！',
@@ -122,7 +122,7 @@ class App extends Component {
 			return;
 		} else {
 			//			
-			ajax.postJson('http://134.175.9.97:3000/login', logindata).then(data => {
+			ajax.postJson('http://localhost:3000/login', logindata).then(data => {
 				if(data.code == '200') {
 					Message({
 						message: '登陆成功！',
@@ -131,6 +131,11 @@ class App extends Component {
 					localStorage.setItem('session', data.data.session);
 					this.props.fmenuLogin('true');
 					this.props.father(data);
+				}else{
+					Message({
+				message: data.message,
+				type: 'warning'
+			});
 				}
 
 			}, err => {

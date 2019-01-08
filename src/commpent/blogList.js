@@ -32,7 +32,7 @@ console.log(id)
 	
 	blogListApi = () => {
 		var form = 'session=' + localStorage.getItem('session') + "&pageIndex=" + this.state.pageIndex + '&pageSize=' + this.state.pageSize + '&user=' +localStorage.getItem('user');
-		ajax.getJson('http://134.175.9.97:3000/wz/search?' + form).then(data => {
+		ajax.getJson('http://localhost:3000/wz/search?' + form).then(data => {
 			if(data.code == 200) {
 				var a = [];
 				for(var i = 0; i < data.innerList.length; i++) {

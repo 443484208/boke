@@ -118,7 +118,7 @@ class App extends Component {
 		)
 			var vm = this;
 		
-		ajax.postJson('http://134.175.9.97:3000/wz/article', articleData).then(data => {
+		ajax.postJson('http://localhost:3000/wz/article', articleData).then(data => {
 				if(data.code == '200') {
 					Message({
 				message: '提交成功！三秒返回首页',
