@@ -2,7 +2,7 @@ import React, {
 	Component
 } from 'react';
 
-import { Message,Input,Button } from 'element-react';
+import { Message, Input, Button } from 'element-react';
 import 'element-theme-default';
 import './../css/menu.css';
 import ajax from './../js/ajax';
@@ -17,14 +17,16 @@ class App extends Component {
 			detailsData: {
 
 			},
-			detailsButtons:''
-			
+			wzarticlereviewData: '',
+			detailsButtons: '',
+			textbox: '',
+
 		};
 
 	}
 	componentDidMount() {
 		this.getDetails();
-		var a='2';
+		var a = '2';
 		console.log(a.__proto__)
 
 	}
@@ -32,33 +34,87 @@ class App extends Component {
 		var getData = {
 			user: localStorage.getItem('user'),
 			session: localStorage.getItem('session'),
-			id: localStorage.getItem('detailsId'),
+			id: time.getParam('id'),
 		}
 		ajax.postJson('http://localhost:3000/wz/details', getData).then(data => {
 			if(data.code == '200') {
-				data.data.modificationtime = time.getDays(data.data.modificationtime)
+				data.data.modificationtime = time.getTime(data.data.modificationtime)
 				this.state.detailsData = data.data;
+
 				this.setState(this.state);
 				this.refs.ExhibitionText.handleChange(data.data.text);
 				this.refs.ExhibitionText.titleChange(data.data.title);
+				this.wzarticlereview();
 			}
 
 		}, err => {
 			console.log(err)
 		})
 	}
-	detailsFocus=()=>{
-		
-		this.state.detailsButtons =(<div className="details-button">
-  <Button  type="primary">评论</Button>
+	wzarticlereview = () => {
+		var getData = {
+			user: localStorage.getItem('user'),
+			session: localStorage.getItem('session'),
+			id: time.getParam('id'),
+		}
+		ajax.postJson('http://localhost:3000/wz/articlereview', getData).then(data => {
+			if(data.code == '200') {
+				this.state.detailsId = data.data.id;
+				this.state.wzarticlereviewData = data.data;
+				this.setState (
+					this.state
+				)
+			}
+
+		}, err => {
+			console.log(err)
+		})
+	}
+	detailsFocus = () => {
+
+		this.state.detailsButtons = (<div className="details-button">
+  <Button  type="primary" onClick={this.writeComments}>评论</Button>
   </div>)
+
 		this.setState(this.state)
 	}
-	detailsOnblur=(e)=>{
-		if(e.target.value==''){
-			this.state.detailsButtons='';
+	writeComments = () => {
+		var comments =this.state.wzarticlereviewData.comments==""? new Array():time.postObj(this.state.wzarticlereviewData.comments);
+		var lists = {
+			commentators: localStorage.getItem('user'),
+			contents: this.state.textbox,
+			CommentTimes: time.getTimes(new Date()),
+		};
+		comments.push(lists);
+		var getData = {
+			session: localStorage.getItem('session'),
+			user: localStorage.getItem('user'),
+			id: this.state.detailsId,
+			list: time.postStr(comments)
+		};
+		console.log(getData)
+		ajax.postJson('http://localhost:3000/wz/writeComments', getData).then(data => {
+			if(data.code == '200') {
+				
+			}
+
+		}, err => {
+			console.log(err)
+		})
+		
+	}
+	detailsOnblur = (e) => {
+		if(e.target.value == '') {
+			this.state.detailsButtons = '';
 			this.setState(this.state)
 		}
+	}
+	detailsOnchange = (event) => {
+		console.log(event)
+		this.setState({
+			textbox: event
+		});
+
 	}
 
 	render() {
@@ -83,8 +139,9 @@ class App extends Component {
 
   <Input onFocus={this.detailsFocus}  
         type="textarea" onBlur={this.detailsOnblur}
+        onChange={this.detailsOnchange}
         autosize={{ minRows: 2, maxRows: 4}}
-        placeholder="请输入内容"
+        placeholder="请输入内容" value={this.state.textbox}
       />
   {this.state.detailsButtons}
 
@@ -112,7 +169,7 @@ class App extends Component {
 					
 					</div>
 					<div className="details-stat"><time datetime="2019-01-05T04:21:04.044Z" title="" className="time">16分钟前</time>
-						<div className="details-delete"> &nbsp;·&nbsp;删除</div>
+						
 						<div className="details-stat-box">
 							<div className="details-like-action details-action">
 								<svg aria-hidden="true" width="16" height="16" viewBox="0 0 20 20" className="icon like-icon">

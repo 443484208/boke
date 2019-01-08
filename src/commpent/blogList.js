@@ -25,20 +25,21 @@ class App extends Component {
 		this.blogListApi();
 
 	}
-	details=(id)=>{
-console.log(id)
-		this.props.renderList(true,id);
+	details = (id) => {
+		const w = window.open('about:blank');
+		var test = window.location.href;
+		w.location.href = test + 'articlereview?id='+id;
 	}
-	
+
 	blogListApi = () => {
-		var form = 'session=' + localStorage.getItem('session') + "&pageIndex=" + this.state.pageIndex + '&pageSize=' + this.state.pageSize + '&user=' +localStorage.getItem('user');
+		var form = 'session=' + localStorage.getItem('session') + "&pageIndex=" + this.state.pageIndex + '&pageSize=' + this.state.pageSize + '&user=' + localStorage.getItem('user');
 		ajax.getJson('http://localhost:3000/wz/search?' + form).then(data => {
 			if(data.code == 200) {
 				var a = [];
 				for(var i = 0; i < data.innerList.length; i++) {
-					var day = time.getDay(data.innerList[i].modificationtime);
-				
-					var days = time.getDays(data.innerList[i].modificationtime);
+					var day = time.hyCurrent(data.innerList[i].modificationtime);
+
+					var days = time.getTime(data.innerList[i].modificationtime);
 					a.push(<li key={i}>
 				<div className="blogList-box" onClick={this.details.bind(this, data.innerList[i].id)} >
 					<div className="blogList-info">

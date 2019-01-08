@@ -1,14 +1,14 @@
 import React, {
 	Component
 } from 'react';
-import logo from './../logo.svg';
-import './../App.css';
+
+import './../../App.css';
 
 import { Link } from 'react-router-dom';
-import Login from './login'
-import Menu from './menu'
-import Details from './details'
-import BlogList from './blogList'
+import Login from './../login'
+import Menu from './../menu'
+import Details from './../details'
+
 
 class App extends React.Component {
 	constructor(props) {
@@ -21,7 +21,7 @@ class App extends React.Component {
 		}
 	}
 	componentDidMount() {
-		console.log(this.props.location.query)
+		
 		if(localStorage.getItem('user')){
 			this.state.isLogin=true;
 		}else{
@@ -41,12 +41,6 @@ class App extends React.Component {
 	}
 	//	接受登陆
 	fmenu = (data) => {
-		console.log("6")
-		
-		this.state.menu = data;
-		this.setState(
-			this.state
-		)
 		var datas={
 
   pathname:'/',
@@ -92,7 +86,7 @@ class App extends React.Component {
 			<div>
 			{a}
 			<Menu renderList={this.renderList} fmenuLogin={this.fmenuLogin} fmenuRegister={this.fmenuRegister} fmenu={this.fmenu} ref="getMenu"/>
-			<BlogList ref="blogList" />
+			<Details />
            </div>
 		);
 	}

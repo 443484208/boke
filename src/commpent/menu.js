@@ -44,8 +44,9 @@ class App extends Component {
 	menuClick = (e) => {
 		this.state.menuStart = this.state.list[e].title;
 		this.props.fmenu(this.state.list[e].href);
-		this.props.renderList();
 		this.setState(this.state);
+
+
 	}
 	menuLogin = (data) => {
 		this.props.fmenuLogin();

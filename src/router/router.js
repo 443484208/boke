@@ -10,6 +10,7 @@ import login from './../commpent/login';
 import test from './../commpent/first_app';
 import home from './../commpent/home';
 import article from './../commpent/article/article';
+import articlereview from './../commpent/list/list';
 
  
 const Root = () => (
@@ -22,7 +23,7 @@ const Root = () => (
                   <Switch>
                      <Route path="/" exact component={home} />
                      <Route path="/six" component={article} />
-                     <Route path="/test" component={test} />
+                     <Route path="/articlereview" component={articlereview} />
 
                       {/*路由不正确时，默认跳回home页面*/}
                      <Route render={() => <Redirect to="/" />} />
