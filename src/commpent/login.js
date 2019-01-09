@@ -4,6 +4,7 @@ import React, {
 import ajax from './../js/ajax';
 import time from './../js/time';
 import logo from './../logo.svg';
+import hyApi from './../js/api';
 
 import { Message } from 'element-react';
 import 'element-theme-default';
@@ -119,7 +120,7 @@ class App extends Component {
 			return;
 		} else {
 			//			
-			ajax.postJson('http://localhost:3000/addUser', logindata).then(data => {
+			ajax.postJson(hyApi+'addUser', logindata).then(data => {
 				if (data.code == '200') {
 					Message({
 						message: '注册成功！',
@@ -157,7 +158,7 @@ class App extends Component {
 			return;
 		} else {
 			//			
-			ajax.postJson('http://localhost:3000/search', logindata).then(data => {
+			ajax.postJson(hyApi+'search', logindata).then(data => {
 				if (data.code == '200') {
 					Message({
 						message: '请重新设置密码！',
@@ -194,7 +195,7 @@ class App extends Component {
 			return;
 		} else {
 			//			
-			ajax.postJson('http://localhost:3000/retrieve', logindata).then(data => {
+			ajax.postJson(hyApi+'retrieve', logindata).then(data => {
 				if (data.code == '200') {
 					Message({
 						message: '重设密码成功！',
@@ -233,7 +234,7 @@ class App extends Component {
 			return;
 		} else {
 			//			
-			ajax.postJson('http://localhost:3000/login', logindata).then(data => {
+			ajax.postJson(hyApi+'login', logindata).then(data => {
 				if (data.code == '200') {
 					Message({
 						message: '登陆成功！',

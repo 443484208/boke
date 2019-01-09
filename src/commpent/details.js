@@ -7,6 +7,8 @@ import 'element-theme-default';
 import './../css/menu.css';
 import ajax from './../js/ajax';
 import time from './../js/time';
+import hyApi from './../js/api';
+
 import ExhibitionText from './article/exhibitionText';
 import { Link } from 'react-router-dom';
 
@@ -36,7 +38,7 @@ class App extends Component {
 			session: localStorage.getItem('session'),
 			id: time.getParam('id'),
 		}
-		ajax.postJson('http://localhost:3000/wz/details', getData).then(data => {
+		ajax.postJson(hyApi+'wz/details', getData).then(data => {
 			if (data.code == '200') {
 				data.data.modificationtime = time.getTime(data.data.modificationtime)
 
@@ -63,7 +65,7 @@ class App extends Component {
 			session: localStorage.getItem('session'),
 			id: time.getParam('id'),
 		}
-		ajax.postJson('http://localhost:3000/wz/articlereview', getData).then(data => {
+		ajax.postJson(hyApi+'wz/articlereview', getData).then(data => {
 			if (data.code == '200') {
 				data.data.comments = time.postParse(data.data.comments)
 				console.log(data.data.comments)
@@ -108,7 +110,7 @@ class App extends Component {
 			commentNumber:comments.length,
 			articleId:time.getParam('id'),
 		};
-		ajax.postJson('http://localhost:3000/wz/writeComments', getData).then(data => {
+		ajax.postJson(hyApi+'wz/writeComments', getData).then(data => {
 			if (data.code == '200') {
 				Message({
 					message: '评论成功！',

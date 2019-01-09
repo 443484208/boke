@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import Exhibition from './exhibition';
 import ajax from './../../js/ajax';
 import time from './../../js/time';
+import hyApi from './../../js/api';
 import ReactQuill, {
 	Quill
 } from 'react-quill'; // ES6
@@ -118,7 +119,7 @@ class App extends Component {
 			)
 			var vm = this;
 
-			ajax.postJson('http://localhost:3000/wz/article', articleData).then(data => {
+			ajax.postJson(hyApi+'wz/article', articleData).then(data => {
 				if (data.code == '200') {
 					Message({
 						message: '提交成功！三秒返回首页',

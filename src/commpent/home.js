@@ -21,6 +21,7 @@ class App extends React.Component {
 		}
 	}
 	componentDidMount() {
+
 		console.log(this.props.location.query)
 		if (localStorage.getItem('user')) {
 			this.state.isLogin = true;

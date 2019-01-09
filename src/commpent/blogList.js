@@ -5,6 +5,7 @@ import React, {
 import './../css/menu.css';
 import ajax from './../js/ajax';
 import time from './../js/time';
+import hyApi from './../js/api';
 import { Message } from 'element-react';
 import { Link } from 'react-router-dom';
 
@@ -34,7 +35,7 @@ class App extends Component {
 
 	blogListApi = () => {
 		var form = 'session=' + localStorage.getItem('session') + "&pageIndex=" + this.state.pageIndex + '&pageSize=' + this.state.pageSize + '&user=' + localStorage.getItem('user');
-		ajax.getJson('http://localhost:3000/wz/search?' + form).then(data => {
+		ajax.getJson(hyApi+'wz/search?' + form).then(data => {
 			if(data.code == 200) {
 				var a = [];
 				for(var i = 0; i < data.innerList.length; i++) {
