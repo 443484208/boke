@@ -64,7 +64,9 @@ class App extends Component {
 			user: localStorage.getItem('user'),
 			session: localStorage.getItem('session'),
 			id: time.getParam('id'),
+			userAuthor:this.state.detailsData.user
 		}
+		console.log(this.state.detailsData.user)
 		ajax.postJson(hyApi+'wz/articlereview', getData).then(data => {
 			if (data.code == '200') {
 				data.data.comments =data.data.comments==""?[]: time.postParse(data.data.comments)
@@ -105,7 +107,6 @@ class App extends Component {
 		var getData = {
 			session: localStorage.getItem('session'),
 			user: localStorage.getItem('user'),
-			id: this.state.detailsId,
 			list: time.postStr(comments),
 			commentNumber:comments.length,
 			articleId:time.getParam('id'),
