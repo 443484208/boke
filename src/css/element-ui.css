@@ -1,4 +1,7 @@
+.el-message {
+    z-index: 9999;
+}
 
-.el-message{
-	z-index: 9999;
+.auth .el-dropdown-link i {
+    display: none;
 }

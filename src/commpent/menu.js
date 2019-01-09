@@ -3,6 +3,9 @@ import React, {
 } from 'react';
 
 import './../css/menu.css';
+import { Message,Dropdown,MessageBox } from 'element-react';
+import time from './../js/time';
+
 
 import { Link } from 'react-router-dom';
 
@@ -55,6 +58,26 @@ class App extends Component {
 		this.props.fmenuRegister();
 
 	}
+	cancellation=(e)=> {
+		MessageBox.confirm('此操作将退出, 是否继续?', '提示', {
+		  type: 'warning'
+		}).then(() => {
+			time.clearLocalStorageAll();
+
+		  Message({
+			type: 'success',
+			message: '注销成功!三秒后重新登陆'
+		  });
+		  setTimeout(() => {
+			window.location.reload()
+		}, 3000)
+		}).catch(() => {
+		  Message({
+			type: 'info',
+			message: '已取消注销'
+		  });
+		});
+	  }
 	
 	withLoadingIndicator = (data) => {
 		if(this.state.loginStatus) {
@@ -63,7 +86,16 @@ class App extends Component {
 					<div className="nav-item submit"><img src="https://b-gold-cdn.xitu.io/v3/static/img/submit-icon.53f4253.svg" className="icon"/>  <Link to="/six"><span>  写文章</span></Link>
 			
 					</div>
-							<span>{user}</span>
+					<Dropdown onCommand={this.cancellation.bind(this)} menu={(
+          <Dropdown.Menu>
+            <Dropdown.Item command="a">注销</Dropdown.Item>
+            <Dropdown.Item command="b">修改密码</Dropdown.Item>
+          </Dropdown.Menu>
+        )}>
+          <span className="el-dropdown-link">
+		  {user}<i className="el-icon-caret-bottom el-icon--right"></i>
+          </span>
+        </Dropdown>
 					</li>)
 		} else {
 

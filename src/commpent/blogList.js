@@ -5,6 +5,7 @@ import React, {
 import './../css/menu.css';
 import ajax from './../js/ajax';
 import time from './../js/time';
+import { Message } from 'element-react';
 import { Link } from 'react-router-dom';
 
 class App extends Component {

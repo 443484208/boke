@@ -393,6 +393,10 @@ class gg {
             a = JSON.stringify(a);
             return a;
         }
+    postParse(a){
+    	a=JSON.parse(a);
+    	return a
+    }
 	//字符串逆转
 	strturn(str) {
 		if(str != "") {

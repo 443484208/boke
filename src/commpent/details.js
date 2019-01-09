@@ -15,7 +15,7 @@ class App extends Component {
 		super(props);
 		this.state = {
 			detailsData: {
-
+				comments:'',
 			},
 			wzarticlereviewData: '',
 			detailsButtons: '',
@@ -37,14 +37,20 @@ class App extends Component {
 			id: time.getParam('id'),
 		}
 		ajax.postJson('http://localhost:3000/wz/details', getData).then(data => {
-			if(data.code == '200') {
+			if (data.code == '200') {
 				data.data.modificationtime = time.getTime(data.data.modificationtime)
+
 				this.state.detailsData = data.data;
 
 				this.setState(this.state);
 				this.refs.ExhibitionText.handleChange(data.data.text);
 				this.refs.ExhibitionText.titleChange(data.data.title);
 				this.wzarticlereview();
+			}else{
+				Message({
+			message: data.message,
+			type: 'warning'
+		});
 			}
 
 		}, err => {
@@ -58,12 +64,20 @@ class App extends Component {
 			id: time.getParam('id'),
 		}
 		ajax.postJson('http://localhost:3000/wz/articlereview', getData).then(data => {
-			if(data.code == '200') {
+			if (data.code == '200') {
+				data.data.comments = time.postParse(data.data.comments)
+				console.log(data.data.comments)
+
 				this.state.detailsId = data.data.id;
 				this.state.wzarticlereviewData = data.data;
-				this.setState (
+				this.setState(
 					this.state
 				)
+			}else{
+				Message({
+			message: data.message,
+			type: 'warning'
+		});
 			}
 
 		}, err => {
@@ -73,38 +87,51 @@ class App extends Component {
 	detailsFocus = () => {
 
 		this.state.detailsButtons = (<div className="details-button">
-  <Button  type="primary" onClick={this.writeComments}>评论</Button>
-  </div>)
+			<Button type="primary" onClick={this.writeComments}>评论</Button>
+		</div>)
 
 		this.setState(this.state)
 	}
 	writeComments = () => {
-		var comments =this.state.wzarticlereviewData.comments==""? new Array():time.postObj(this.state.wzarticlereviewData.comments);
+		var comments = this.state.wzarticlereviewData.comments.length < 0 ? new Array() : this.state.wzarticlereviewData.comments;
 		var lists = {
-			commentators: localStorage.getItem('user'),
-			contents: this.state.textbox,
-			CommentTimes: time.getTimes(new Date()),
+			commentator: localStorage.getItem('user'),
+			contentT: this.state.textbox,
+			commentTimeT: time.getTimes(new Date()),
 		};
 		comments.push(lists);
 		var getData = {
 			session: localStorage.getItem('session'),
 			user: localStorage.getItem('user'),
 			id: this.state.detailsId,
-			list: time.postStr(comments)
+			list: time.postStr(comments),
+			commentNumber:comments.length,
+			articleId:time.getParam('id'),
 		};
-		console.log(getData)
 		ajax.postJson('http://localhost:3000/wz/writeComments', getData).then(data => {
-			if(data.code == '200') {
-				
+			if (data.code == '200') {
+				Message({
+					message: '评论成功！',
+				});
+				this.wzarticlereview();
+				this.setState({
+					textbox: ''
+				});
+			this.state.detailsButtons = '';
+			}else{
+				Message({
+			message: data.message,
+			type: 'warning'
+		});
 			}
 
 		}, err => {
 			console.log(err)
 		})
-		
+
 	}
 	detailsOnblur = (e) => {
-		if(e.target.value == '') {
+		if (e.target.value == '') {
 			this.state.detailsButtons = '';
 			this.setState(this.state)
 		}
@@ -118,59 +145,29 @@ class App extends Component {
 	}
 
 	render() {
-		return(<div className="details">
-			<div className="details-area details-article-area shadow">
-				<div className="details-area-author"><div  className="details-headPortrait"></div>
-					<div className="author-info-box">
-						<a href="#" className="username ellipsis">{this.state.detailsData.user}</a>
-						<div><time  title={this.state.detailsData.modificationtime}>{this.state.detailsData.modificationtime}</time><span>阅读 {this.state.detailsData.look}</span>
-
-						</div>
-					</div>
-				</div>
-				<h1 className="details-area-title">{this.state.detailsData.title}</h1>
-				<div><ExhibitionText ref='ExhibitionText' />
-				</div>
-				<div className="footer">
-<div  className="footer-title">评论</div>
-
-
-
-
-  <Input onFocus={this.detailsFocus}  
-        type="textarea" onBlur={this.detailsOnblur}
-        onChange={this.detailsOnchange}
-        autosize={{ minRows: 2, maxRows: 4}}
-        placeholder="请输入内容" value={this.state.textbox}
-      />
-  {this.state.detailsButtons}
-
-
-				</div>
-				<div>
-
-				<div className="details-item">
+		var b=[];
+		var comments=this.state.wzarticlereviewData.comments||0;
+		console.log(comments)
+		for(var i=0;i<comments.length;i++){
+			b.push(<div className="details-item">
 			<div className="details-comment ">
 				<div className="details-popover">
-						<div className="details-popover-lazy" ></div>
+					<div className="details-popover-lazy" ></div>
 				</div>
 				<div className="details-content">
 					<div className="details-content-box">
-						<div  className="details-inline">
-						
-							<a href="#" >ssssyoki
-							
-							</a>
+						<div className="details-inline">
+							<a href="#" >{comments[i].commentator}
+				</a>
 						</div>
-						
 					</div>
-					<div className="details-content-title">翻译这种垃圾文章不觉得浪费生命吗？还是你英语水平太差了实在找不到好的翻译了？</div>
+					<div className="details-content-title">{comments[i].contentT}</div>
 					<div className="limit-ctl-box">
-					
+
 					</div>
-					<div className="details-stat"><time datetime="2019-01-05T04:21:04.044Z" title="" className="time">16分钟前</time>
-						
-						<div className="details-stat-box">
+					<div className="details-stat"><time datetime="2019-01-05T04:21:04.044Z" title="" className="time">{comments[i].commentTimeT}</time>
+
+						{/* <div className="details-stat-box">
 							<div className="details-like-action details-action">
 								<svg aria-hidden="true" width="16" height="16" viewBox="0 0 20 20" className="icon like-icon">
 									<g fill="none" fill-rule="evenodd">
@@ -187,7 +184,7 @@ class App extends Component {
 										<path stroke="#8A93A0" stroke-linejoin="round" d="M10 17c-4.142 0-7.5-2.91-7.5-6.5S5.858 4 10 4c4.142 0 7.5 2.91 7.5 6.5 0 1.416-.522 2.726-1.41 3.794-.129.156.41 3.206.41 3.206l-3.265-1.134c-.998.369-2.077.634-3.235.634z"></path>
 									</g>
 								</svg> <span className="action-title">回复</span></div>
-						</div>
+						</div> */}
 					</div>
 
 					<div className="sub-comment-list sub-comment-list">
@@ -196,27 +193,63 @@ class App extends Component {
 				</div>
 
 			</div>
-		</div>
-				
-				
+		</div>)
+		}
+
+
+
+		return (<div className="details">
+			<div className="details-area details-article-area shadow">
+				<div className="details-area-author"><div className="details-headPortrait"></div>
+					<div className="author-info-box">
+						<a href="#" className="username ellipsis">{this.state.detailsData.user}</a>
+						<div><time title={this.state.detailsData.modificationtime}>{this.state.detailsData.modificationtime}</time><span>阅读 {this.state.detailsData.look}</span>
+
+						</div>
+					</div>
+				</div>
+				<h1 className="details-area-title">{this.state.detailsData.title}</h1>
+				<div><ExhibitionText ref='ExhibitionText' />
+				</div>
+				<div className="footer">
+					<div className="footer-title">评论</div>
+
+
+
+
+					<Input onFocus={this.detailsFocus}
+						type="textarea" onBlur={this.detailsOnblur}
+						onChange={this.detailsOnchange}
+						autosize={{ minRows: 2, maxRows: 4 }}
+						placeholder="请输入内容" value={this.state.textbox}
+					/>
+					{this.state.detailsButtons}
+
+
+				</div>
+				<div>
+
+					{b}
+
+
 				</div>
 			</div>
 
 			<div className="details-sidebar">
 
-					<div  className="details-sidebar-author">关于作者</div>
-					<div className="details-sidebar-div">
-						<a  href="#" className="details-sidebar-item" >
-							<div    className="details-sidebar-avatar" ></div>
-							<div  className="details-sidebar-box">
-								<div  className="details-sidebar-username">{this.state.detailsData.user}</div>
-								<div  title="前端开发" className="details-sidebar-position">前端开发</div>
-							</div>
-						</a>
-					</div>
-					<div  className="details-sidebar-author">个人介绍</div>
-					<div  className="details-sidebar-introduce">
-						暂无功能
+				<div className="details-sidebar-author">关于作者</div>
+				<div className="details-sidebar-div">
+					<a href="#" className="details-sidebar-item" >
+						<div className="details-sidebar-avatar" ></div>
+						<div className="details-sidebar-box">
+							<div className="details-sidebar-username">{this.state.detailsData.user}</div>
+							<div title="前端开发" className="details-sidebar-position">前端开发</div>
+						</div>
+					</a>
+				</div>
+				<div className="details-sidebar-author">个人介绍</div>
+				<div className="details-sidebar-introduce">
+					暂无功能
 					</div>
 
 			</div>

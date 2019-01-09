@@ -103,42 +103,49 @@ class App extends Component {
 			session: localStorage.getItem('session'),
 			title: this.state.title,
 			text: this.state.text,
-			modificationtime: time.getDays(new Date()),
+			modificationtime: time.getTimes(new Date()),
 		}
-		if((articleData.title.indexOf(" ") >= 0 || articleData.title == null || articleData.title == '') || ( articleData.text == null || articleData.text == '')) {
+		if ((articleData.title.indexOf(" ") >= 0 || articleData.title == null || articleData.title == '') || (articleData.text == null || articleData.text == '')) {
 			Message({
 				message: '标题和内容不能为空！',
 				type: 'warning'
 			});
 			return;
 		} else {
-		this.state.loading = true;
-		this.setState(
-			this.state
-		)
+			this.state.loading = true;
+			this.setState(
+				this.state
+			)
 			var vm = this;
-		
-		ajax.postJson('http://localhost:3000/wz/article', articleData).then(data => {
-				if(data.code == '200') {
-					Message({
-				message: '提交成功！三秒返回首页',
-			});
 
-			
-			setTimeout(() => {
-				vm.props.history.push('/')
-			}, 3000)
+			ajax.postJson('http://localhost:3000/wz/article', articleData).then(data => {
+				if (data.code == '200') {
+					Message({
+						message: '提交成功！三秒返回首页',
+					});
+
+
+					setTimeout(() => {
+						vm.props.history.push('/')
+					}, 3000)
+				} else {
+					Message({
+						message: data.message,
+						type: 'warning'
+					});
+			this.state.loading = false;
+
 				}
 
 			}, err => {
-		vm.state.loading = true;
-		vm.setState(
-			vm.state
-		)
+				vm.state.loading = true;
+				vm.setState(
+					vm.state
+				)
 
 				console.log(err)
 			})
-			
+
 
 		}
 	}
@@ -156,27 +163,27 @@ class App extends Component {
 		});
 
 	}
-	back=()=>{
+	back = () => {
 		this.props.history.goBack()
 	}
 
 	render() {
-		return(
+		return (
 			<div>
-			<div className="article-h1">
-			<input placeholder="输入文章标题..."  onChange={this.titleChange} value={this.state.title} maxLength="80" />
-			<ReactQuill value={this.state.text}
-                  onChange={this.handleChange} modules={this.state.modules}
-                    />
-</div>
-						<div className="article-h2"><Exhibition ref='Exhibition' />
-						</div>
-						<div className="article-h3">
-						<Button type="primary" onClick={this.submission} icon="edit" loading={this.state.loading}>提交</Button>
-						<Button type="danger" onClick={this.clean} icon="delete" >清除</Button>
-						<Button type="success" onClick={this.back} icon="caret-left" >返回</Button>
-						</div>
-</div>
+				<div className="article-h1">
+					<input placeholder="输入文章标题..." onChange={this.titleChange} value={this.state.title} maxLength="80" />
+					<ReactQuill value={this.state.text}
+						onChange={this.handleChange} modules={this.state.modules}
+					/>
+				</div>
+				<div className="article-h2"><Exhibition ref='Exhibition' />
+				</div>
+				<div className="article-h3">
+					<Button type="primary" onClick={this.submission} icon="edit" loading={this.state.loading}>提交</Button>
+					<Button type="danger" onClick={this.clean} icon="delete" >清除</Button>
+					<Button type="success" onClick={this.back} icon="caret-left" >返回</Button>
+				</div>
+			</div>
 		)
 	}
 }

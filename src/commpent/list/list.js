@@ -3,7 +3,7 @@ import React, {
 } from 'react';
 
 import './../../App.css';
-
+import { Message } from 'element-react';
 import { Link } from 'react-router-dom';
 import Login from './../login'
 import Menu from './../menu'
