@@ -30,7 +30,7 @@ class App extends Component {
 	details = (id) => {
 		const w = window.open('about:blank');
 		var test = window.location.href;
-		w.location.href = test + 'articlereview?id='+id;
+		w.location.href = test + ''+id;
 	}
 
 	blogListApi = () => {
@@ -42,8 +42,8 @@ class App extends Component {
 					var day = time.hyCurrent(data.innerList[i].modificationtime);
 
 					var days = time.getTime(data.innerList[i].modificationtime);
-					a.push(<li key={i}>
-				<div className="blogList-box" onClick={this.details.bind(this, data.innerList[i].id)} >
+					a.push(<li key={i}><Link target="_blank"  to={'articlereview?id='+data.innerList[i].id} >
+				<div className="blogList-box" >
 					<div className="blogList-info">
 						<div className="blogList-meta">
 							<ul className="blogList-meta-list">
@@ -53,7 +53,7 @@ class App extends Component {
 								<li className="item">{day}</li>
 								
 							</ul>
-						</div>
+						</div> 
 						<div className="blogList-title">
 							<a href="#">{data.innerList[i].title}</a>
 						</div>
@@ -63,7 +63,7 @@ class App extends Component {
 							<span >{days}</span></div>
 					</div>
 				</div>
-			</li>)
+				</Link></li>)
 				}
 
 				this.state.innerList = a;

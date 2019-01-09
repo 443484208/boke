@@ -83,7 +83,7 @@ class App extends Component {
 		if(this.state.loginStatus) {
 			var user = localStorage.getItem('user')
 			return(<li className="nav-item auth">
-					<div className="nav-item submit"><img src="https://b-gold-cdn.xitu.io/v3/static/img/submit-icon.53f4253.svg" className="icon"/>  <Link to="/six"><span>  写文章</span></Link>
+					<div className="nav-item submit"><img src="https://b-gold-cdn.xitu.io/v3/static/img/submit-icon.53f4253.svg" className="icon"/>  <Link target="_blank"  to="/six"><span>  写文章</span></Link>
 			
 					</div>
 					<Dropdown onCommand={this.cancellation.bind(this)} menu={(

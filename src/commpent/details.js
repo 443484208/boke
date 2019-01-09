@@ -67,7 +67,7 @@ class App extends Component {
 		}
 		ajax.postJson(hyApi+'wz/articlereview', getData).then(data => {
 			if (data.code == '200') {
-				data.data.comments = time.postParse(data.data.comments)
+				data.data.comments =data.data.comments==""?[]: time.postParse(data.data.comments)
 				console.log(data.data.comments)
 
 				this.state.detailsId = data.data.id;
