@@ -23,7 +23,7 @@ class App extends React.Component {
 	componentDidMount() {
 
 		console.log(this.props.location.query)
-		if (localStorage.getItem('user')) {
+		if(localStorage.getItem('user')) {
 			this.state.isLogin = true;
 		} else {
 			this.state.isLogin = false;
@@ -42,27 +42,41 @@ class App extends React.Component {
 	}
 	//	接受登陆
 	fmenu = (data) => {
-		console.log("6")
 
 		this.state.menu = data;
 		this.setState(
 			this.state
 		)
 		var datas = {
-
 			pathname: '/',
 			query: data,
-
 		}
-
 		this.props.history.push(datas)
+		if(data == 'article') {
+
+			this.refs.blogList.state.option = '1';
+this.refs.blogList.setState(
+			this.refs.getMenu.state
+		);
+		this.refs.blogList.blogListApi()
+		} else  if(data=='home'){
+			this.refs.blogList.state.option = '0';
+this.refs.blogList.setState(
+			this.refs.getMenu.state
+		);
+		this.refs.blogList.blogListApi()
+		}
+		
+		this.refs.getMenu.state.titleStatus = data;
+		this.refs.getMenu.setState(
+			this.refs.getMenu.state
+		);
 
 	}
 	renderButton = () => {
-		if (this.state.isLogin == false) {
+		if(this.state.isLogin == false) {
 			return <Login fmenuLogin={this.fmenuLogin} father={this.father} ref="getLogin" />
-		} else {
-		}
+		} else {}
 	}
 	fmenuLogin = (data) => {
 		this.state.isLogin = data || false;
@@ -87,9 +101,7 @@ class App extends React.Component {
 	render() {
 		var a = this.renderButton();
 
-
-
-		return (
+		return(
 			<div>
 				{a}
 				<Menu renderList={this.renderList} fmenuLogin={this.fmenuLogin} fmenuRegister={this.fmenuRegister} fmenu={this.fmenu} ref="getMenu" />

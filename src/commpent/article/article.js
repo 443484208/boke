@@ -14,7 +14,7 @@ import 'react-quill/dist/quill.snow.css'; // ES6
 import 'react-quill/dist/quill.bubble.css'; // ES6
 import 'react-quill/dist/quill.core.css'; // ES6
 import './../../css/menu.css';
-import { Message, Button } from 'element-react';
+import { Message, Button,Radio } from 'element-react';
 import 'element-theme-default';
 Quill.register('modules/imageDrop', ImageDrop);
 
@@ -22,6 +22,7 @@ class App extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
+			option:'0',
 			text: '',
 			title: '',
 			loading: false,
@@ -73,7 +74,7 @@ class App extends Component {
 						'align': []
 					}],
 
-					['link', 'image'],
+					['link'],
 					['clean'],
 
 				],
@@ -97,6 +98,9 @@ class App extends Component {
 		this.refs.Exhibition.titleChange(e.target.value);
 
 	}
+	onOption(option) {
+  this.setState({ option });
+}
 	submission = () => {
 
 		var articleData = {
@@ -104,6 +108,7 @@ class App extends Component {
 			session: localStorage.getItem('session'),
 			title: this.state.title,
 			text: this.state.text,
+			option: this.state.option,
 			modificationtime: time.getTimes(new Date()),
 		}
 		if ((articleData.title.indexOf(" ") >= 0 || articleData.title == null || articleData.title == '') || (articleData.text == null || articleData.text == '')) {
@@ -171,11 +176,15 @@ class App extends Component {
 	render() {
 		return (
 			<div>
+			<div className="article-radio">
+			是否公开：
+      <Radio value="0" checked={this.state.option == '0'} onChange={this.onOption.bind(this)}>公开</Radio>
+      <Radio value="1" checked={this.state.option == '1'} onChange={this.onOption.bind(this)}>隐私</Radio>
+    </div>
 				<div className="article-h1">
+				
 					<input placeholder="输入文章标题..." onChange={this.titleChange} value={this.state.title} maxLength="80" />
-					<ReactQuill value={this.state.text}
-						onChange={this.handleChange} modules={this.state.modules}
-					/>
+					<ReactQuill value={this.state.text} onChange={this.handleChange} modules={this.state.modules}/>
 				</div>
 				<div className="article-h2"><Exhibition ref='Exhibition' />
 				</div>

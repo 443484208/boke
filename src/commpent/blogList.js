@@ -19,13 +19,12 @@ class App extends Component {
 			user: localStorage.getItem('user'),
 			session: localStorage.getItem('session'),
 			innerList: '',
+			option:'0'
 		};
 
 	}
 	componentDidMount = () => {
-
 		this.blogListApi();
-
 	}
 	details = (id) => {
 		const w = window.open('about:blank');
@@ -34,7 +33,7 @@ class App extends Component {
 	}
 
 	blogListApi = () => {
-		var form = 'session=' + localStorage.getItem('session') + "&pageIndex=" + this.state.pageIndex + '&pageSize=' + this.state.pageSize + '&user=' + localStorage.getItem('user');
+		var form ='option='+this.state.option +'&session=' + localStorage.getItem('session') + "&pageIndex=" + this.state.pageIndex + '&pageSize=' + this.state.pageSize + '&user=' + localStorage.getItem('user');
 		ajax.getJson(hyApi+'wz/search?' + form).then(data => {
 			if(data.code == 200) {
 				var a = [];

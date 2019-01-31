@@ -394,8 +394,9 @@ class gg {
             return a;
         }
     postParse(a){
+    	  a=a.replace(/\n/g,"\\n").replace(/\r/g,"\\r");
     	a=JSON.parse(a);
-    	return a
+    	return a;
     }
 	//字符串逆转
 	strturn(str) {

@@ -27,10 +27,11 @@ class App extends Component {
 				title: '留言',
 				href: 'leavingMessage'
 			}, {
-				title: '关于',
+				title: '关于作者',
 				href: 'about'
 			}],
 			loginStatus: false,
+			titleStatus: 'home',
 
 		};
 
@@ -45,10 +46,18 @@ class App extends Component {
 
 	}
 	menuClick = (e) => {
-		this.state.menuStart = this.state.list[e].title;
+		if( this.state.list[e].href=='article'){
+			this.state.menuStart = this.state.list[e].title;
 		this.props.fmenu(this.state.list[e].href);
 		this.setState(this.state);
 
+		}else{
+			this.state.menuStart = this.state.list[e].title;
+		this.props.fmenu(this.state.list[e].href);
+		this.setState(this.state);
+
+		}
+		
 
 	}
 	menuLogin = (data) => {
@@ -111,7 +120,7 @@ class App extends Component {
 		var lis = this.state.list;
 		var list = [];
 		for(var i = 0; i < lis.length; i++) {
-			list.push(<li key={lis[i].title} onClick={this.menuClick.bind(this, i)}  className="nav-item link-item route-active">
+			list.push(<li key={lis[i].title} onClick={this.menuClick.bind(this, i)}  className={['nav-item link-item route-active',lis[i].href==this.state.titleStatus?'menu-red':null].join(' ')} > 
 								{lis[i].title}
 							</li>)
 		};
