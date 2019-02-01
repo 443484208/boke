@@ -241,7 +241,7 @@ class App extends Component {
 					});
 					localStorage.setItem('user', data.data.user);
 					localStorage.setItem('session', data.data.session);
-					this.props.fmenuLogin('true');
+					this.props.fmenuLogin(true);
 					this.props.father(data);
 				} else {
 					Message({

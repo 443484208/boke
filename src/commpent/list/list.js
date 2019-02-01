@@ -28,7 +28,10 @@ class App extends React.Component {
 			this.state.isLogin=false;
 		}
 		this.setState(this.state);
-
+this.refs.getMenu.setState({
+	menuStart:'返回',
+	start:true,
+})
 	}
 	//	接受登陆参数
 	father = (data) => {
@@ -40,15 +43,10 @@ class App extends React.Component {
 		
 	}
 	//	接受登陆
-	fmenu = (data) => {
-		var datas={
+	fmenus = (data) => {
+		
 
-  pathname:'/',
-  query:data,
-
-		}
-
-		this.props.history.push(datas)
+		this.props.history.goBack()
 
 	}
 	renderButton=()=> {
@@ -85,7 +83,7 @@ class App extends React.Component {
 		return(
 			<div>
 			{a}
-			<Menu renderList={this.renderList} fmenuLogin={this.fmenuLogin} fmenuRegister={this.fmenuRegister} fmenu={this.fmenu} ref="getMenu"/>
+			<Menu renderList={this.renderList} fmenuLogin={this.fmenuLogin} fmenuRegister={this.fmenuRegister} fmenus={this.fmenus} ref="getMenu"/>
 			<Details />
            </div>
 		);

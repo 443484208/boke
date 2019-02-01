@@ -3,7 +3,7 @@ import React, {
 } from 'react';
 
 import './../css/menu.css';
-import { Message,Dropdown,MessageBox } from 'element-react';
+import { Message,Dropdown,MessageBox} from 'element-react';
 import time from './../js/time';
 
 
@@ -27,11 +27,12 @@ class App extends Component {
 				title: '留言',
 				href: 'leavingMessage'
 			}, {
-				title: '关于作者',
+				title: '作者',
 				href: 'about'
 			}],
 			loginStatus: false,
 			titleStatus: 'home',
+			start:false,
 
 		};
 
@@ -92,13 +93,15 @@ class App extends Component {
 		if(this.state.loginStatus) {
 			var user = localStorage.getItem('user')
 			return(<li className="nav-item auth">
-					<div className="nav-item submit"><img src="https://b-gold-cdn.xitu.io/v3/static/img/submit-icon.53f4253.svg" className="icon"/>  <Link target="_blank"  to="/six"><span>  写文章</span></Link>
+					<div className="nav-item submit"><img src="https://b-gold-cdn.xitu.io/v3/static/img/submit-icon.53f4253.svg" className="icon"/> 
+					 <Link className="menu-article-pc" target="_blank"  to="/six"><span>  写文章</span></Link>
+					 <Link className="menu-article-yd"  to="/six"><span>  写文章</span></Link>
 			
 					</div>
 					<Dropdown onCommand={this.cancellation.bind(this)} menu={(
           <Dropdown.Menu>
             <Dropdown.Item command="a">注销</Dropdown.Item>
-            <Dropdown.Item command="b">修改密码</Dropdown.Item>
+            <Dropdown.Item className="menu-article-pc"  command="b">修改密码</Dropdown.Item>
           </Dropdown.Menu>
         )}>
           <span className="el-dropdown-link">
@@ -114,7 +117,22 @@ class App extends Component {
 					</li>)
 		}
 	}
+handleCommand=(command)=> {
+	
+	this.setState({
+		menuStart:this.state.list[command].title
+	})
+	this.props.fmenu(this.state.list[command].href);
 
+
+
+	
+
+}
+back=()=>{
+		this.props.fmenus();
+	
+}
 	render() {
 
 		var lis = this.state.list;
@@ -131,7 +149,17 @@ class App extends Component {
 			<nav role="navigation" className="menu-nav">
 				<ul className="menu-list">
 					<li className="main-nav-list">
-						<div className="phone-show-menu"><span>{this.state.menuStart}</span>
+						<div className="phone-show-menu" >
+						{this.state.start==true?<span onClick={this.back} className=" menu-red" >{this.state.menuStart}</span>: <Dropdown   trigger="click"  onCommand={this.handleCommand.bind(this)}  menu={(
+        <Dropdown.Menu>
+          <Dropdown.Item command="0">首页</Dropdown.Item>
+          <Dropdown.Item command="1">自己</Dropdown.Item>
+          <Dropdown.Item command="3">留言</Dropdown.Item>
+          <Dropdown.Item command="4">作者</Dropdown.Item>
+
+        </Dropdown.Menu>
+      )}><span className=" menu-red" >{this.state.menuStart}</span>
+        </Dropdown>}
 							<div className="icon ion-arrow-down-b"></div>
 						</div>
 						<ul className="phone-hide">
